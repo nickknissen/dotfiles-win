@@ -1,8 +1,13 @@
 #c::Center() ;Windows + c
+#1::Center(0.95) ;Windows + 1
+#2::Center(0.85) ;Windows + 2
+#3::Center(0.75) ;Windows + 3
+#4::Center(0.65) ;Windows + 4
+#5::Center(0.55) ;Windows + 4
 
-SC29::$
+SC29::$ ; map ½ to $
 
-Center()
+Center(scaleRatio = 1)
 {
 	WinGet, mm, MinMax, A
 	If (mm <> 1)
@@ -11,19 +16,24 @@ Center()
 		WinGetPos, winX, winY, winW, winH, A
 		
 		;Use center of window as base for comparison.
-		baseX := winx + winw / 2
-		baseY := winy + winh / 2
+		baseX := winx + winW / 2
+		baseY := winy + winH / 2
 		
 		curMonNum := GetMonitorNumber(baseX, baseY, winX, winY, monCount)
 		curMonWidth := GetMonitorWorkArea("width", curMonNum)
 		curMonHeight := GetMonitorWorkArea("height", curMonNum)
 		
 		SysGet, curMon, Monitor, %curMonNum%
+
+		If (scaleRatio < 1) {
+			winW := curMonWidth * scaleRatio
+			winH := curMonHeight * scaleRatio
+		}
 		
-		newWinX := (curMonWidth - winW)/2 + curMonLeft
-		newWinY := (curMonHeight - winH)/2 + curMonTop
+		newWinX := ((curMonWidth - winW) ) /2 + curMonLeft
+		newWinY := ((curMonHeight - winH) ) /2 + curMonTop
 		
-		WinMove, A,, newWinX, newWinY
+		WinMove, A,, newWinX, newWinY, winW, winH
 	}
 	Return
 }
