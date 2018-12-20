@@ -1,3 +1,4 @@
+. "$PSScriptRoot\functions.ps1"
 # Check to see if we are currently running "as Administrator"
 if (!(Verify-Elevated)) {
    $newProcess = new-object System.Diagnostics.ProcessStartInfo "PowerShell";
@@ -7,11 +8,12 @@ if (!(Verify-Elevated)) {
 
    exit
 }
-
 ### Chocolatey
-if ((which cinst) -eq $null) {
+if ((Get-Command cinst -ErrorAction SilentlyContinue | Select-Object Definition) -eq $null) {
     iex (new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')
     Refresh-Environment
+    choco feature enable -n=allowGlobalConfirmation
+} else {
     choco feature enable -n=allowGlobalConfirmation
 }
 #CLI
