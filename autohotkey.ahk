@@ -1,3 +1,57 @@
+﻿#SingleInstance force
+
+; Monitor for WM_DEVICECHANGE 
+OnMessage(0x219, "MsgMonitor")
+
+hWnd := GetAHKWin()
+
+DEVICE_NOTIFY_WINDOW_HANDLE := 0x0 
+DBT_DEVTYP_DEVICEINTERFACE  := 5
+DEVICE_NOTIFY_ALL_INTERFACE_CLASSES := 0x00000004
+DBT_DEVNODES_CHANGED       := 0x0007
+DBT_DEVICEREMOVECOMPLETE   := 0x8004
+DBT_DEVICEARRIVAL          := 0x8000
+DBT_DEVTYP_DEVICEINTERFACE := 0x00000005
+
+VarSetCapacity(DevHdr, 32, 0) ; Actual size is 29, but the function will fail with less than 32
+NumPut(32, DevHdr, 0, "UInt") ; sizeof(_DEV_BROADCAST_DEVICEINTERFACE) (should be 29)
+NumPut(DBT_DEVTYP_DEVICEINTERFACE, DevHdr, 4, "UInt") ; DBT_DEVTYP_DEVICEINTERFACE
+Addr := &DevHdr
+Flags := DEVICE_NOTIFY_WINDOW_HANDLE|DEVICE_NOTIFY_ALL_INTERFACE_CLASSES
+Ret := DllCall("RegisterDeviceNotification", "UInt", hWnd, "UInt", Addr, "UInt", Flags)
+
+MsgMonitor(wParam, lParam, msg, hwnd)
+{
+   	global DBT_DEVICEARRIVAL, DBT_DEVICEREMOVECOMPLETE, DBT_DEVTYP_DEVICEINTERFACE
+
+	if (wParam == DBT_DEVICEREMOVECOMPLETE && GetHex(lParam) ==  0x7FE830) {
+		;
+	} else if (wParam == DBT_DEVICEARRIVAL && GetHex(lParam) ==  0x7FE830 && FileExist("C:\Program Files (x86)\Dell\Dell Display Manager\ddm.exe")) {
+		if (A_ComputerName == "HOME") {
+			Run "C:\Program Files (x86)\Dell\Dell Display Manager\ddm.exe" /1:SetActiveInput DP1
+		} else {
+			Run "C:\Program Files (x86)\Dell\Dell Display Manager\ddm.exe" /1:SetActiveInput DP2
+		}
+	}
+}
+
+GetHex(Num)
+{
+    Old := A_FormatInteger 
+    SetFormat, IntegerFast, Hex
+    Num += 0 
+    Num .= ""
+    SetFormat, IntegerFast, %Old%
+    return Num
+}
+
+GetAHKWin()
+{
+    Gui +LastFound  
+    hwnd := WinExist() 
+    return hwnd
+}
+
 #c::Center() ;Windows + c
 #1::Center(0.95) ;Windows + 1
 #2::Center(0.85) ;Windows + 2
