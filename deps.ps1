@@ -20,7 +20,8 @@ if ((Get-Command cinst -ErrorAction SilentlyContinue | Select-Object Definition)
 cinst curl --limit-output
 cinst nvm.portable --limit-output
 cinst git.install --limit-output
-cinst vim --limit-output
+cinst vim-tux --limit-output
+cinst fzf --limit-output
 
 cinst 7zip --limit-output
 cinst conemu --limit-output
@@ -40,3 +41,13 @@ Install-Module -Name 'Get-ChildItemColor' -Scope CurrentUser -Force
 Enable-WindowsOptionalFeature -Online -All -FeatureName `
     "Microsoft-Hyper-V-All", `
     -NoRestart | Out-Null
+
+
+md ~\vimfiles\autoload
+$uri = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+(New-Object Net.WebClient).DownloadFile(
+  $uri,
+  $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath(
+    "~\vimfiles\autoload\plug.vim"
+  )
+)
