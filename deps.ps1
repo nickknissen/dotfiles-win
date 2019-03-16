@@ -38,12 +38,10 @@ Install-Module -Name 'posh-git' -Scope CurrentUser -Force
 Install-Module -Name 'oh-my-posh' -Scope CurrentUser -Force
 Install-Module -Name 'Get-ChildItemColor' -Scope CurrentUser -Force
 
-Enable-WindowsOptionalFeature -Online -All -FeatureName `
-    "Microsoft-Hyper-V-All", `
-    -NoRestart | Out-Null
+Enable-WindowsOptionalFeature -Online -All -FeatureName "Microsoft-Hyper-V-All" | Out-Null
 
 
-md ~\vimfiles\autoload
+New-Item -Force -ItemType directory -Path ~\vimfiles\autoload | Out-Null
 $uri = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 (New-Object Net.WebClient).DownloadFile(
   $uri,
