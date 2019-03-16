@@ -61,6 +61,12 @@ GetAHKWin()
 
 SC29::$ ; map ½ to $
 
+#IfWinActive ahk_exe gvim.exe
+{
+^+n::Send +{F1}n
+}
+
+
 Center(scaleRatio = 1)
 {
 	WinGet, mm, MinMax, A
