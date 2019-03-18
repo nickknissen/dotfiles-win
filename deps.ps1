@@ -17,21 +17,31 @@ if ((Get-Command cinst -ErrorAction SilentlyContinue | Select-Object Definition)
     choco feature enable -n=allowGlobalConfirmation
 }
 #CLI
-cinst curl --limit-output
-cinst nvm.portable --limit-output
-cinst git.install --limit-output
-cinst vim-tux --limit-output
-cinst fzf --limit-output
+cup git --limit-output
+cup curl --limit-output
+cup nvm.portable --limit-output
+cup git.install --limit-output
+cup vim-tux --limit-output
+cup fzf --limit-output
+cup ag --limit-output
 
-cinst 7zip --limit-output
-cinst conemu --limit-output
-cinst autohotkey --limit-output
+cup 7zip --limit-output
+cup conemu --limit-output
+cup autohotkey --limit-output
+
+cup python --limit-output
+cup php --limit-output
+cup composer --limit-output
 
 nvm on
 $nodeLtsVersion = choco search nodejs-lts --limit-output | ConvertFrom-String -TemplateContent "{Name:package-name}\|{Version:1.11.1}" | Select -ExpandProperty "Version"
 nvm install $nodeLtsVersion
 nvm use $nodeLtsVersion
 Remove-Variable nodeLtsVersion
+
+pip install --upgrade pip 
+pip install --upgrade mycli pgcli
+pip install --upgrade mycli 
 
 Write-Host "Installing PowerShell Modules..." -ForegroundColor "Yellow"
 Install-Module -Name 'posh-git' -Scope CurrentUser -Force

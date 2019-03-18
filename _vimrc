@@ -5,6 +5,8 @@ Plug 'kaicataldo/material.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf',  { 'dir': '~/.fzf' }
 Plug 'junegunn/fzf.vim'
+Plug 'davidhalter/jedi-vim'
+Plug 'carpetsmoker/confirm_quit.vim'
 
 call plug#end()
 
@@ -16,11 +18,11 @@ if has("gui_running")
     set guioptions-=r "remove right-hand scrollbar
     set guioptions-=R "remove right-hand scrollbar for split window
 endif
-
+ 
 set background=dark
 colorscheme material 
 set t_Co=256
-set guifont=Inconsolata:h12
+set guifont=DejaVuSansMono_NF:h12:cEASTEUROPE:qDRAFT
 
 
 set number 
@@ -50,3 +52,7 @@ nnoremap <C-H> <C-W><C-H>
 
 map <C-n> :NERDTreeToggle<CR>
 map <S-F1>n :NERDTreeFind<CR>
+
+map <C-P> :FZF<CR>
+
+let g:confirm_quit_nomap = 0
