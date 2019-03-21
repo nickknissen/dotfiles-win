@@ -27,10 +27,18 @@ function cddash {
 }
 
 function DockerCompose-Exec() {
-docker-compose exec $args 
+    docker-compose exec $args 
+}
+
+function DockerCompose-Exec-Php() {
+    docker-compose exec php $args 
 }
 
 Set-Alias -Name cd -value cddash -Option AllScope
 
 Set-Alias dc docker-compose
 Set-Alias dce DockerCompose-Exec
+Set-Alias dcep DockerCompose-Exec-Php
+
+Set-Alias l Get-ChildItemColor -option AllScope
+Set-Alias ls Get-ChildItemColorFormatWide -option AllScope
