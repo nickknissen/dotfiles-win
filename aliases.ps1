@@ -42,3 +42,4 @@ Set-Alias dcep DockerCompose-Exec-Php
 
 Set-Alias l Get-ChildItemColor -option AllScope
 Set-Alias ls Get-ChildItemColorFormatWide -option AllScope
+Set-Alias tig Run-Tig 

@@ -17,21 +17,30 @@ if ((Get-Command cinst -ErrorAction SilentlyContinue | Select-Object Definition)
     choco feature enable -n=allowGlobalConfirmation
 }
 #CLI
-cup git --limit-output
 cup curl --limit-output
 cup nvm.portable --limit-output
 cup git.install --limit-output
 cup vim-tux --limit-output
 cup fzf --limit-output
-cup ag --limit-output
+cup rg --limit-output
 
 cup 7zip --limit-output
 cup conemu --limit-output
 cup autohotkey --limit-output
+cup install firefox --limit-output
+cup install 1password --limit-output
+cup install winscp.portable --limit-output
+cup install openssh --limit-output
+cup install microsoft-teams.install --limit-output
+cup install neovim --limit-output
 
-cup python --limit-output
-cup php --limit-output
+cup python3 --limit-output
+cup install php --version 7.4 -my --limit-output
+cup install php --version 7.3 -my --limit-output
 cup composer --limit-output
+cup install dotnetcore-sdk --limit-output
+cup install vscode --limit-output
+cup install microsoft-edge --limit-output
 
 nvm on
 $nodeLtsVersion = choco search nodejs-lts --limit-output | ConvertFrom-String -TemplateContent "{Name:package-name}\|{Version:1.11.1}" | Select -ExpandProperty "Version"

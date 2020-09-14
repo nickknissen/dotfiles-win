@@ -50,3 +50,39 @@ function Set-Environment([String] $variable, [String] $value) {
     #[System.Environment]::SetEnvironmentVariable("$variable", "$value","User")
     Invoke-Expression "`$env:${variable} = `"$value`""
 }
+
+function Get-WslExe {
+    return Get-Command "wsl.exe" -ErrorAction SilentlyContinue |
+    Select-Object -ExpandProperty Definition
+}
+
+function Invoke-WslCommand {
+    [CmdletBinding()]
+    param (
+        [string]$WslCommand,
+        [string]$Arguments,
+        [string]$PowerShellFallback = ""
+    )
+
+    $wsl = Get-WslExe
+
+    if ([string]::IsNullOrEmpty($wsl)) {
+        # wsl.exe is not installed, so Run the PowerShellFallback
+        # First, if the PowerShellFallback is blank, try a sane default
+        if ([string]::IsNullOrEmpty($PowerShellFallback)) {
+            if ($PowerShellFallback.StartsWith("ls ")) {
+                $PowerShellFallback = "Get-ChildItem"
+            }
+            else {
+                $PowerShellFallback = "$WslCommand"
+            }
+        }
+
+        Invoke-Expression "$PowerShellFallback $Arguments"
+    }
+    else {
+        Invoke-Expression "wsl.exe $WslCommand $Arguments"
+    }
+}
+
+function Run-Tig { Invoke-WslCommand "tig" "-d Ubuntu-16.04" }

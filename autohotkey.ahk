@@ -1,7 +1,24 @@
-﻿#SingleInstance force
+﻿;#Warn  ; Recommended for catching common errors.
+; Disable Caps Lock key
+Capslock::Esc
+Esc::
+SetCapsLockState, off
+Suspend On
+Send, {ESC}
+Suspend Off
+return
+
+!Left::SoundSet, -5
+!Right::SoundSet, +5
+!Up::Media_Play_Pause
+return
+
+
+
+#SingleInstance force
 
 ; Monitor for WM_DEVICECHANGE 
-OnMessage(0x219, "MsgMonitor")
+;OnMessage(0x219, "MsgMonitor")
 
 hWnd := GetAHKWin()
 
@@ -10,7 +27,7 @@ DBT_DEVTYP_DEVICEINTERFACE  := 5
 DEVICE_NOTIFY_ALL_INTERFACE_CLASSES := 0x00000004
 DBT_DEVNODES_CHANGED       := 0x0007
 DBT_DEVICEREMOVECOMPLETE   := 0x8004
-DBT_DEVICEARRIVAL          := 0x8000
+DBT_DEVICEARRIVAL          := 0x8000dfgsdds
 DBT_DEVTYP_DEVICEINTERFACE := 0x00000005
 
 VarSetCapacity(DevHdr, 32, 0) ; Actual size is 29, but the function will fail with less than 32
@@ -62,6 +79,10 @@ GetAHKWin()
 SC29::$ ; map ½ to $
 
 #IfWinActive ahk_exe gvim.exe
+{
+^+n::Send +{F1}n
+}
+#IfWinActive ahk_exe nvim-qt.exe
 {
 ^+n::Send +{F1}n
 }
@@ -145,3 +166,7 @@ GetMonitorWorkArea(measurement, monToGet)
 		Return tmpMonHeight
 	}
 }
+
+; Disable Caps Lock key
+SetCapsLockState, AlwaysOff
+return
